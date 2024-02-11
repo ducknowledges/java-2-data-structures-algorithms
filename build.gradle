@@ -1,0 +1,173 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    //code quality control
+    id 'pmd'
+    id 'jacoco'
+    id "name.remal.sonarlint" version "3.4.1"
+    id "com.diffplug.spotless" version "6.23.3"
+}
+
+group = 'com.github.ducknowledges'
+
+wrapper {
+    gradleVersion '8.5'
+}
+
+// Plugin Config
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+shadowJar {
+    archiveBaseName.set(project.name)
+    archiveClassifier.set('')
+}
+
+idea {
+    project {
+        languageLevel = 17
+    }
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+pmd {
+    group = 'verification'
+    consoleOutput = true
+    toolVersion = "6.55.0"
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        googleJavaFormat('1.19.2')
+        formatAnnotations()
+    }
+}
+
+//Dependencies
+ext {
+    bom = [
+            //BOM versions
+            'springBoot': '3.2.2',
+    ]
+    versions = [
+            //Dependencies version
+    ]
+}
+
+dependencies {
+    //Import a BOM
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${bom.springBoot}")
+
+    //Dependencies
+
+    //Processors
+
+    //Test Dependencies
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+    //Integration Test Dependencies
+
+}
+
+//Dependencies resolver
+configurations.configureEach {
+    resolutionStrategy.failOnVersionConflict()
+    resolutionStrategy.force 'org.hamcrest:hamcrest:2.2'
+    resolutionStrategy.force 'net.bytebuddy:byte-buddy:1.14.11'
+    resolutionStrategy.force 'net.bytebuddy:byte-buddy-agent:1.14.11'
+    resolutionStrategy.force 'org.slf4j:slf4j-api:2.0.11'
+    resolutionStrategy.force 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    resolutionStrategy.force 'net.minidev:json-smart:2.5.0'
+    resolutionStrategy.force 'org.sonarsource.sslr:sslr-core:1.24.0.633'
+    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+//Print dependencies from BOMs: Task -> other -> managedVersions
+tasks.register('managedVersions') {
+    doLast {
+        dependencyManagement.managedVersions.each {
+            print it.key + ':' + it.value + '\n'
+        }
+    }
+}
+
+//Build Project
+build {
+    dependsOn shadowJar
+}
+
+compileJava {
+    dependsOn spotlessApply
+}
+
+jar {
+    enabled = true
+}
+
+// Code Quality Control
+tasks.register("codeQuality") {
+    description = 'Runs code quality control.'
+    group = 'verification'
+    dependsOn sonarlintMain
+    dependsOn sonarlintTest
+    dependsOn pmdMain
+    dependsOn pmdTest
+    dependsOn test
+}
+
+test {
+    description = 'Runs unit tests.'
+    useJUnitPlatform {
+        filter.includeTestsMatching('*Test')
+    }
+    failFast = true
+    maxHeapSize = '512m'
+    finalizedBy jacocoTestReport
+}
+
+check {
+    dependsOn codeQuality
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.outputLocation = layout.buildDirectory.dir('jacoco')
+    }
+    dependsOn test
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        failOnViolation = true
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+        rule {
+            limit {
+                element = 'METHOD'
+                counter = 'COMPLEXITY'
+                value = 'TOTALCOUNT'
+                maximum = 8
+            }
+        }
+    }
+    dependsOn test
+}
+
+// Dependencies repository
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
