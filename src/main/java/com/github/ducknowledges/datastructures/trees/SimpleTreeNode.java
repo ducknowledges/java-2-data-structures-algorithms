@@ -18,7 +18,7 @@ public class SimpleTreeNode<T> {
 }
 
 class SimpleTree<T> {
-  public SimpleTreeNode<T> Root; // корень, может быть null
+  public SimpleTreeNode<T> Root;
 
   public SimpleTree(SimpleTreeNode<T> root) {
     Root = root;
@@ -146,3 +146,4 @@ class SimpleTree<T> {
     }
   }
 }
+
