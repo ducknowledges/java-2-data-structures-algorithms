@@ -33,6 +33,7 @@ class SimpleTree<T> {
     }
     ParentNode.Children.add(NewChild);
     NewChild.Parent = ParentNode;
+    assignLevels(NewChild, ParentNode.Level + 1);
   }
 
   public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
@@ -146,4 +147,3 @@ class SimpleTree<T> {
     }
   }
 }
-
