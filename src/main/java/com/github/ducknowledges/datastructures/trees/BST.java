@@ -136,6 +136,10 @@ class BST<T> {
 
   private void deleteNodeWithOneOrZeroChild(BSTNode<T> nodeToDelete) {
     BSTNode<T> child = this.getChild(nodeToDelete);
+    if (nodeToDelete.Parent == null && child == null) {
+      Root = null;
+      return;
+    }
     if (child == null) {
       BSTNode<T> parent = nodeToDelete.Parent;
       if (parent.LeftChild == nodeToDelete) {

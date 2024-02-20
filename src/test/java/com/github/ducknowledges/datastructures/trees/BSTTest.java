@@ -192,13 +192,23 @@ class BSTTest {
   }
 
   @Test
-  @DisplayName("should delete leaf node")
+  @DisplayName("should delete leaf nodes")
   void shouldDeleteLeafNode() {
     BST<Integer> tree = this.createTree();
 
-    boolean deleted = tree.DeleteNodeByKey(2);
+    boolean deleted1 = tree.DeleteNodeByKey(2);
+    boolean deleted2 = tree.DeleteNodeByKey(7);
+    boolean deleted3 = tree.DeleteNodeByKey(12);
+    boolean deleted4 = tree.DeleteNodeByKey(10);
+    boolean deleted5 = tree.DeleteNodeByKey(3);
+    boolean deleted6 = tree.DeleteNodeByKey(9);
 
-    assertThat(deleted).isTrue();
+    assertThat(deleted1).isTrue();
+    assertThat(deleted2).isTrue();
+    assertThat(deleted3).isTrue();
+    assertThat(deleted4).isTrue();
+    assertThat(deleted5).isTrue();
+    assertThat(deleted6).isTrue();
     BSTFind<Integer> finder = tree.FindNodeByKey(2);
     assertThat(finder.NodeHasKey).isFalse();
   }
