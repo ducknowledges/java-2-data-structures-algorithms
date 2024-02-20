@@ -80,6 +80,23 @@ class BSTTest {
   }
 
   @Test
+  @DisplayName("should add node to empty tree")
+  void shouldAddNodeToEmptyTree() {
+    BST<Integer> tree = new BST<>(null);
+
+    BSTFind<Integer> finder = tree.FindNodeByKey(1);
+    assertThat(finder.NodeHasKey).isFalse();
+    boolean addResult = tree.AddKeyValue(1, 1);
+    BSTNode<Integer> addedNode = tree.FindNodeByKey(1).Node;
+
+    assertThat(addResult).isTrue();
+    assertThat(addedNode).isNotNull();
+    assertThat(addedNode.NodeKey).isEqualTo(1);
+    assertThat(addedNode.NodeValue).isEqualTo(1);
+    assertThat(addedNode.Parent).isNull();
+  }
+
+  @Test
   @DisplayName("should add node to the left child")
   void shouldAddNodeToLeftChild() {
     BST<Integer> tree = this.createTree();
