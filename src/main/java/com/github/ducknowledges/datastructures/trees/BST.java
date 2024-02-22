@@ -1,5 +1,9 @@
 package com.github.ducknowledges.datastructures.trees;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 class BSTNode<T> {
   public int NodeKey;
   public T NodeValue;
@@ -188,5 +192,60 @@ class BST<T> {
       return 0;
     }
     return 1 + recursiveCount(node.LeftChild) + recursiveCount(node.RightChild);
+  }
+
+  public ArrayList<BSTNode> WideAllNodes() {
+    ArrayList<BSTNode> result = new ArrayList<>();
+    Queue<BSTNode> nodeTraversalQueue = new LinkedList<>();
+    if (Root != null) {
+      nodeTraversalQueue.add(Root);
+      this.breadthTraversalAdd(nodeTraversalQueue, result);
+    }
+    return result;
+  }
+
+  private void breadthTraversalAdd(Queue<BSTNode> nodeTraversalQueue, ArrayList<BSTNode> result) {
+    if (nodeTraversalQueue.isEmpty()) {
+      return;
+    }
+    BSTNode node = nodeTraversalQueue.poll();
+    result.add(node);
+    if (node.LeftChild != null) {
+      nodeTraversalQueue.add(node.LeftChild);
+    }
+    if (node.RightChild != null) {
+      nodeTraversalQueue.add(node.RightChild);
+    }
+    this.breadthTraversalAdd(nodeTraversalQueue, result);
+  }
+
+  public ArrayList<BSTNode> DeepAllNodes(int order) {
+    ArrayList<BSTNode> result = new ArrayList<>();
+    if (Root != null) {
+      this.recursiveDeepTraversal(Root, result, order);
+    }
+    return result;
+  }
+
+  private void recursiveDeepTraversal(
+      BSTNode<T> currentNode, ArrayList<BSTNode> result, int order) {
+    if (currentNode == null) {
+      return;
+    }
+    if (order == 0) {
+      this.recursiveDeepTraversal(currentNode.LeftChild, result, order);
+      result.add(currentNode);
+      this.recursiveDeepTraversal(currentNode.RightChild, result, order);
+    }
+    if (order == 1) {
+      this.recursiveDeepTraversal(currentNode.LeftChild, result, order);
+      this.recursiveDeepTraversal(currentNode.RightChild, result, order);
+      result.add(currentNode);
+    }
+    if (order == 2) {
+      result.add(currentNode);
+      this.recursiveDeepTraversal(currentNode.LeftChild, result, order);
+      this.recursiveDeepTraversal(currentNode.RightChild, result, order);
+    }
   }
 }
