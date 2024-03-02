@@ -18,7 +18,7 @@ class BSTNode {
 }
 
 class BalancedBST {
-  public BSTNode Root; // корень дерева
+  public BSTNode Root;
 
   public BalancedBST() {
     Root = null;
