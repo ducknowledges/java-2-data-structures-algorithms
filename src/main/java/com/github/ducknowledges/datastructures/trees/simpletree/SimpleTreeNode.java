@@ -1,4 +1,4 @@
-package com.github.ducknowledges.datastructures.trees;
+package com.github.ducknowledges.datastructures.trees.simpletree;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.github.ducknowledges.datastructures.trees;
+package com.github.ducknowledges.datastructures.trees.arraybst;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package com.github.ducknowledges.datastructures.trees;
+package com.github.ducknowledges.datastructures.trees.bst;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,7 +41,7 @@ class BSTFind<T> {
   }
 }
 
-class BST<T> {
+public class BST<T> {
 
   private static boolean NODE_HAS_KEY = true;
   private static boolean NODE_HAS_NOT_KEY = false;
