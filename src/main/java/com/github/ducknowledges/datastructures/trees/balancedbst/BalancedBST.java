@@ -7,7 +7,7 @@ class BSTNode {
   public BSTNode Parent;
   public BSTNode LeftChild;
   public BSTNode RightChild;
-  public int Level;
+  public int     Level;
 
   public BSTNode(int key, BSTNode parent) {
     NodeKey = key;
@@ -25,9 +25,7 @@ class BalancedBST {
   }
 
   public void GenerateTree(int[] a) {
-    if (a.length == 0) {
-      return;
-    }
+    if (a.length == 0) return;
     int[] sortedArray = Arrays.stream(a).sorted().toArray();
     Root = generateBalancedTree(sortedArray, 0, sortedArray.length - 1, null);
   }
@@ -68,3 +66,4 @@ class BalancedBST {
     return Math.max(leftHeight, rightHeight) + 1;
   }
 }
+
