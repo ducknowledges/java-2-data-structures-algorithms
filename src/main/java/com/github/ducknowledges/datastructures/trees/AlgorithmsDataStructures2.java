@@ -4,7 +4,7 @@ import java.util.*;
 
 public class AlgorithmsDataStructures2 {
   public static int[] GenerateBBSTArray(int[] a) {
-    if (a.length <= 1) return a;
+    if (a.length < 1) return a;
     int bstSize = calculateBSTSize(a);
     int[] balancedBSTArray = new int[bstSize];
     int[] sortedArray = Arrays.copyOf(a, a.length);
@@ -19,7 +19,7 @@ public class AlgorithmsDataStructures2 {
   }
 
   private static int calculateBSTHeight(int[] a) {
-    return (int) Math.ceil(Math.log(a.length - 1.) / Math.log(2));
+    return (int) Math.floor(Math.log(a.length) / Math.log(2));
   }
 
   private static void fillBalancedBSTArray(
