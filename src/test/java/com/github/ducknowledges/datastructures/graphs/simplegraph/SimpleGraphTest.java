@@ -64,7 +64,7 @@ class SimpleGraphTest {
 
   @Test
   @DisplayName("should return False if edge does not exist")
-  void shouldReturnFlaseIsEdge() {
+  void shouldReturnFalseIsEdge() {
     SimpleGraph graph = new SimpleGraph(5);
     graph.AddVertex(1);
     graph.AddVertex(2);
@@ -87,7 +87,15 @@ class SimpleGraphTest {
     assertThat(graph.IsEdge(vertex1, vertex2)).isFalse();
     assertThat(graph.IsEdge(vertex2, vertex1)).isFalse();
 
-    graph.AddEdge(vertex1, vertex2);
+    graph.m_adjacency =
+        new int[][] {
+          // 0  1  2  3  4
+          {0, 1, 0, 0, 0},
+          {1, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0},
+          {0, 0, 0, 0, 0}
+        };
 
     assertThat(graph.IsEdge(vertex1, vertex2)).isTrue();
     assertThat(graph.IsEdge(vertex2, vertex1)).isTrue();
