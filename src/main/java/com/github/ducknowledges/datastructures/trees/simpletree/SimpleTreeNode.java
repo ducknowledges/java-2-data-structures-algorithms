@@ -146,4 +146,30 @@ class SimpleTree<T> {
       }
     }
   }
+
+  public ArrayList<T> EvenTrees() {
+    ArrayList<T> edgeNodeValues = new ArrayList<>();
+    if (Root != null) {
+      this.traversalEvenTrees(Root, edgeNodeValues);
+    }
+    return edgeNodeValues;
+  }
+
+  private void traversalEvenTrees(SimpleTreeNode<T> node, ArrayList<T> edgeNodeValues) {
+    if (node.Children == null) return;
+
+    for (SimpleTreeNode<T> child : node.Children) {
+      if (child != null) {
+        int childCount = this.countNodes(child) + 1;
+        if (childCount % 2 != 0) {
+          edgeNodeValues.add(node.NodeValue);
+          edgeNodeValues.add(child.NodeValue);
+        }
+      }
+    }
+
+    for (SimpleTreeNode<T> child : node.Children) {
+      this.traversalEvenTrees(child, edgeNodeValues);
+    }
+  }
 }

@@ -343,4 +343,98 @@ class SimpleTreeNodeTest {
     assertThat(node4.Level).isEqualTo(1);
     assertThat(node5.Level).isEqualTo(2);
   }
+
+  @Test
+  @DisplayName("should get edge node values of even trees")
+  void shouldGetEdgeNodeValues1() {
+    SimpleTreeNode<Integer> rootNode = new SimpleTreeNode<>(1, null);
+    SimpleTreeNode<Integer> node2 = new SimpleTreeNode<>(2, null);
+    SimpleTreeNode<Integer> node3 = new SimpleTreeNode<>(3, null);
+    SimpleTreeNode<Integer> node4 = new SimpleTreeNode<>(4, null);
+    SimpleTreeNode<Integer> node5 = new SimpleTreeNode<>(5, null);
+    SimpleTreeNode<Integer> node6 = new SimpleTreeNode<>(6, null);
+    SimpleTreeNode<Integer> node7 = new SimpleTreeNode<>(7, null);
+    SimpleTreeNode<Integer> node8 = new SimpleTreeNode<>(8, null);
+    SimpleTreeNode<Integer> node9 = new SimpleTreeNode<>(9, null);
+    SimpleTreeNode<Integer> node10 = new SimpleTreeNode<>(10, null);
+
+    SimpleTree<Integer> tree = new SimpleTree<>(rootNode);
+    tree.AddChild(rootNode, node2);
+    tree.AddChild(rootNode, node3);
+    tree.AddChild(rootNode, node6);
+    tree.AddChild(node2, node5);
+    tree.AddChild(node2, node7);
+    tree.AddChild(node3, node4);
+    tree.AddChild(node6, node8);
+    tree.AddChild(node8, node9);
+    tree.AddChild(node8, node10);
+
+    List<Integer> actualEdges = tree.EvenTrees();
+
+    assertThat(actualEdges).containsExactly(1, 3, 1, 6);
+  }
+
+  @Test
+  @DisplayName("should get edge node values of even trees")
+  void shouldGetEdgeNodeValues2() {
+    SimpleTreeNode<Integer> rootNode = new SimpleTreeNode<>(1, null);
+    SimpleTreeNode<Integer> node2 = new SimpleTreeNode<>(2, null);
+    SimpleTreeNode<Integer> node3 = new SimpleTreeNode<>(3, null);
+    SimpleTreeNode<Integer> node4 = new SimpleTreeNode<>(4, null);
+    SimpleTreeNode<Integer> node5 = new SimpleTreeNode<>(5, null);
+    SimpleTreeNode<Integer> node6 = new SimpleTreeNode<>(6, null);
+    SimpleTreeNode<Integer> node7 = new SimpleTreeNode<>(7, null);
+    SimpleTreeNode<Integer> node8 = new SimpleTreeNode<>(8, null);
+    SimpleTreeNode<Integer> node9 = new SimpleTreeNode<>(9, null);
+    SimpleTreeNode<Integer> node10 = new SimpleTreeNode<>(10, null);
+    SimpleTreeNode<Integer> node11 = new SimpleTreeNode<>(11, null);
+    SimpleTreeNode<Integer> node12 = new SimpleTreeNode<>(12, null);
+
+    SimpleTree<Integer> tree = new SimpleTree<>(rootNode);
+    tree.AddChild(rootNode, node2);
+    tree.AddChild(rootNode, node3);
+    tree.AddChild(rootNode, node6);
+    tree.AddChild(node2, node5);
+    tree.AddChild(node2, node7);
+    tree.AddChild(node3, node4);
+    tree.AddChild(node6, node8);
+    tree.AddChild(node5, node11);
+    tree.AddChild(node7, node12);
+    tree.AddChild(node8, node9);
+    tree.AddChild(node8, node10);
+
+    List<Integer> actualEdges = tree.EvenTrees();
+
+    assertThat(actualEdges).containsExactly(1, 3, 1, 6, 2, 5, 2, 7);
+  }
+
+  @Test
+  @DisplayName("should get edge node values of even trees")
+  void shouldGetEdgeNodeValues3() {
+    SimpleTreeNode<Integer> rootNode = new SimpleTreeNode<>(1, null);
+    SimpleTreeNode<Integer> node2 = new SimpleTreeNode<>(2, null);
+    SimpleTreeNode<Integer> node3 = new SimpleTreeNode<>(3, null);
+    SimpleTreeNode<Integer> node4 = new SimpleTreeNode<>(4, null);
+    SimpleTreeNode<Integer> node5 = new SimpleTreeNode<>(5, null);
+    SimpleTreeNode<Integer> node6 = new SimpleTreeNode<>(6, null);
+    SimpleTreeNode<Integer> node7 = new SimpleTreeNode<>(7, null);
+    SimpleTreeNode<Integer> node8 = new SimpleTreeNode<>(8, null);
+    SimpleTreeNode<Integer> node9 = new SimpleTreeNode<>(9, null);
+    SimpleTreeNode<Integer> node10 = new SimpleTreeNode<>(10, null);
+
+    SimpleTree<Integer> tree = new SimpleTree<>(rootNode);
+    tree.AddChild(rootNode, node2);
+    tree.AddChild(node2, node3);
+    tree.AddChild(node3, node4);
+    tree.AddChild(node4, node5);
+    tree.AddChild(node5, node6);
+    tree.AddChild(node6, node7);
+    tree.AddChild(node7, node8);
+    tree.AddChild(node8, node9);
+    tree.AddChild(node9, node10);
+
+    List<Integer> actualEdges = tree.EvenTrees();
+
+    assertThat(actualEdges).containsExactly(2, 3, 4, 5, 6, 7, 8, 9);
+  }
 }
