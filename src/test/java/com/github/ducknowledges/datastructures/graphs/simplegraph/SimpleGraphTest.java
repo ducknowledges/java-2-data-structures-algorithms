@@ -2,6 +2,8 @@ package com.github.ducknowledges.datastructures.graphs.simplegraph;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -224,5 +226,66 @@ class SimpleGraphTest {
 
     assertThat(graph.IsEdge(0, 1)).isTrue();
     assertThat(graph.vertexCount).isEqualTo(3);
+  }
+
+  @Test
+  @DisplayName("should find route DFS")
+  void shouldFindRoute1() {
+    SimpleGraph graph = new SimpleGraph(5);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(3, 4);
+
+    ArrayList<Vertex> route = graph.DepthFirstSearch(2, 4);
+    List<Integer> routeValues = route.stream().map(v -> v.Value).toList();
+
+    assertThat(routeValues).containsExactly(2, 3, 4);
+  }
+
+  @Test
+  @DisplayName("should find route with DFS")
+  void shouldFindRoute2() {
+    SimpleGraph graph = new SimpleGraph(5);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(3, 4);
+
+    ArrayList<Vertex> route = graph.DepthFirstSearch(4, 1);
+    List<Integer> routeValues = route.stream().map(v -> v.Value).toList();
+
+    assertThat(routeValues).containsExactly(4, 3, 2, 0, 1);
+  }
+
+  @Test
+  @DisplayName("should not find route with DFS")
+  void shouldNotFindRoute() {
+    SimpleGraph graph = new SimpleGraph(5);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(3, 4);
+
+    ArrayList<Vertex> route = graph.DepthFirstSearch(2, 4);
+
+    assertThat(route).isEmpty();
   }
 }

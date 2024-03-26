@@ -1,7 +1,12 @@
 package com.github.ducknowledges.datastructures.graphs.simplegraph;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+
 class Vertex {
   public int Value;
+  public boolean visited;
 
   public Vertex(int val) {
     Value = val;
@@ -84,5 +89,59 @@ class SimpleGraph {
       m_adjacency[v1][v2] = 0;
       m_adjacency[v2][v1] = 0;
     }
+  }
+
+  public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
+    this.prepareSearchStructures();
+    Deque<Vertex> route =
+        this.searchRoute(VFrom, vertex[VTo], new ArrayDeque<>(), new ArrayDeque<>());
+    return this.convertRouteToList(route);
+  }
+
+  private Deque<Vertex> searchRoute(
+      int currentVertexIndex, Vertex searchedVertex, Deque<Vertex> stack, Deque<Integer> visited) {
+    Vertex currentVertex = vertex[currentVertexIndex];
+    if (!currentVertex.visited) {
+      stack.push(currentVertex);
+      visited.push(currentVertexIndex);
+    }
+    for (int adjacentVertexIndex = 0;
+        adjacentVertexIndex < m_adjacency[currentVertexIndex].length;
+        adjacentVertexIndex++) {
+      Vertex adjacent = vertex[adjacentVertexIndex];
+      if (m_adjacency[currentVertexIndex][adjacentVertexIndex] == 1 && !adjacent.visited) {
+        if (adjacent.equals(searchedVertex)) {
+          stack.push(adjacent);
+          return stack;
+        } else {
+          currentVertex.visited = true;
+          return this.searchRoute(adjacentVertexIndex, searchedVertex, stack, visited);
+        }
+      }
+    }
+    stack.pop();
+    visited.pop();
+    currentVertex.visited = true;
+    if (!stack.isEmpty()) {
+      int prevIndex = visited.getFirst();
+      vertex[prevIndex].visited = true;
+      return this.searchRoute(prevIndex, searchedVertex, stack, visited);
+    } else {
+      return stack;
+    }
+  }
+
+  private void prepareSearchStructures() {
+    for (Vertex v : vertex) {
+      v.visited = false;
+    }
+  }
+
+  private ArrayList<Vertex> convertRouteToList(Deque<Vertex> route) {
+    ArrayList<Vertex> list = new ArrayList<>();
+    while (!route.isEmpty()) {
+      list.add(route.removeLast());
+    }
+    return list;
   }
 }
