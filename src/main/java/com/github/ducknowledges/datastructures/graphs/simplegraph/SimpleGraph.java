@@ -2,7 +2,11 @@ package com.github.ducknowledges.datastructures.graphs.simplegraph;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 class Vertex {
   public int Value;
@@ -143,5 +147,52 @@ class SimpleGraph {
       list.add(route.removeLast());
     }
     return list;
+  }
+
+  public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+    this.prepareSearchStructures();
+    Vertex startVertex = vertex[VFrom];
+    startVertex.visited = true;
+    Queue<Integer> queueVIndexes = new ArrayDeque<>();
+    queueVIndexes.add(VFrom);
+    Map<Integer, Integer> prevVertexIndexesMap = new HashMap<>();
+    prevVertexIndexesMap.put(VFrom, null);
+    Map<Integer, Integer> map =
+        this.breadthFirstSearch(vertex[VTo], queueVIndexes, prevVertexIndexesMap);
+
+    ArrayList<Vertex> result = new ArrayList<>();
+    if (map.get(VTo) == null) return result;
+    Integer prevVIndex = VTo;
+    while (prevVIndex != null) {
+      result.add(vertex[prevVIndex]);
+      prevVIndex = map.get(prevVIndex);
+    }
+    Collections.reverse(result);
+    return result;
+  }
+
+  public Map<Integer, Integer> breadthFirstSearch(
+      Vertex searchedVertex,
+      Queue<Integer> queueVIndexes,
+      Map<Integer, Integer> prevVertexIndexesMap) {
+    if (queueVIndexes.isEmpty()) return prevVertexIndexesMap;
+    int currentVIndex = queueVIndexes.poll();
+
+    for (int adjacentVIndex = 0;
+        adjacentVIndex < m_adjacency[currentVIndex].length;
+        adjacentVIndex++) {
+      Vertex adjacentV = vertex[adjacentVIndex];
+      if (m_adjacency[currentVIndex][adjacentVIndex] == 1 && !adjacentV.visited) {
+        if (adjacentV.equals(searchedVertex)) {
+          prevVertexIndexesMap.put(adjacentVIndex, currentVIndex);
+          return prevVertexIndexesMap;
+        } else {
+          adjacentV.visited = true;
+          queueVIndexes.add(adjacentVIndex);
+          prevVertexIndexesMap.putIfAbsent(adjacentVIndex, currentVIndex);
+        }
+      }
+    }
+    return breadthFirstSearch(searchedVertex, queueVIndexes, prevVertexIndexesMap);
   }
 }

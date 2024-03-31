@@ -288,4 +288,86 @@ class SimpleGraphTest {
 
     assertThat(route).isEmpty();
   }
+
+  @Test
+  @DisplayName("should find route with BFS")
+  void shouldFindRouteByBFS1() {
+    SimpleGraph graph = new SimpleGraph(7);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddVertex(5);
+    graph.AddVertex(6);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(1, 4);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(3, 4);
+    graph.AddEdge(3, 5);
+    graph.AddEdge(3, 6);
+    graph.AddEdge(4, 6);
+    graph.AddEdge(5, 6);
+
+    ArrayList<Vertex> route = graph.BreadthFirstSearch(0, 6);
+    List<Integer> routeValues = route.stream().map(v -> v.Value).toList();
+
+    assertThat(routeValues).containsExactly(0, 1, 4, 6);
+  }
+
+  @Test
+  @DisplayName("should find route with BFS in two element graph")
+  void shouldFindRouteByBFS2() {
+    SimpleGraph graph = new SimpleGraph(2);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddEdge(0, 1);
+
+    ArrayList<Vertex> route = graph.BreadthFirstSearch(0, 1);
+    List<Integer> routeValues = route.stream().map(v -> v.Value).toList();
+
+    assertThat(routeValues).containsExactly(0, 1);
+  }
+
+  @Test
+  @DisplayName("should find shortest route with BFS")
+  void shouldFindShortestRouteByBFS() {
+    SimpleGraph graph = new SimpleGraph(5);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(3, 4);
+
+    ArrayList<Vertex> route = graph.BreadthFirstSearch(4, 1);
+    List<Integer> routeValues = route.stream().map(v -> v.Value).toList();
+
+    assertThat(routeValues).containsExactly(4, 3, 2, 1);
+  }
+
+  @Test
+  @DisplayName("should not find route with BFS")
+  void shouldNotFindRouteByBFS() {
+    SimpleGraph graph = new SimpleGraph(5);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(3, 4);
+
+    ArrayList<Vertex> route = graph.BreadthFirstSearch(2, 3);
+
+    assertThat(route).isEmpty();
+  }
 }
