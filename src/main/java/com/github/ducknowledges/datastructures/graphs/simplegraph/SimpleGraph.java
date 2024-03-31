@@ -158,7 +158,7 @@ class SimpleGraph {
     Map<Integer, Integer> prevVertexIndexesMap = new HashMap<>();
     prevVertexIndexesMap.put(VFrom, null);
     Map<Integer, Integer> map =
-        this.breadthFirstSearch(vertex[VTo], queueVIndexes, prevVertexIndexesMap);
+        this.getMapOfVertexPrevIndexesBFS(vertex[VTo], queueVIndexes, prevVertexIndexesMap);
 
     ArrayList<Vertex> result = new ArrayList<>();
     if (map.get(VTo) == null) return result;
@@ -171,7 +171,7 @@ class SimpleGraph {
     return result;
   }
 
-  public Map<Integer, Integer> breadthFirstSearch(
+  public Map<Integer, Integer> getMapOfVertexPrevIndexesBFS(
       Vertex searchedVertex,
       Queue<Integer> queueVIndexes,
       Map<Integer, Integer> prevVertexIndexesMap) {
