@@ -193,6 +193,6 @@ class SimpleGraph {
         }
       }
     }
-    return breadthFirstSearch(searchedVertex, queueVIndexes, prevVertexIndexesMap);
+    return getMapOfVertexPrevIndexesBFS(searchedVertex, queueVIndexes, prevVertexIndexesMap);
   }
 }
