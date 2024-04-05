@@ -171,7 +171,7 @@ class SimpleGraph {
     return result;
   }
 
-  public Map<Integer, Integer> getMapOfVertexPrevIndexesBFS(
+  private Map<Integer, Integer> getMapOfVertexPrevIndexesBFS(
       Vertex searchedVertex,
       Queue<Integer> queueVIndexes,
       Map<Integer, Integer> prevVertexIndexesMap) {
@@ -194,5 +194,32 @@ class SimpleGraph {
       }
     }
     return getMapOfVertexPrevIndexesBFS(searchedVertex, queueVIndexes, prevVertexIndexesMap);
+  }
+
+  public ArrayList<Vertex> WeakVertices() {
+    ArrayList<Vertex> weakVertices = new ArrayList<>();
+    boolean[] weakVertexIndexes = new boolean[vertexCount];
+    for (int i = 0; i < vertexCount; i++) {
+      Vertex currentVertex = this.vertex[i];
+      for (int j = 0; j < vertexCount; j++) {
+        if (weakVertexIndexes[i]) {
+          continue;
+        }
+        if (m_adjacency[i][j] == 1) {
+          for (int k = 0; k < vertexCount; k++) {
+            if (m_adjacency[k][j] == 1 && m_adjacency[k][i] == 1) {
+              weakVertexIndexes[i] = true;
+              weakVertexIndexes[j] = true;
+              weakVertexIndexes[k] = true;
+              break;
+            }
+          }
+        }
+      }
+      if (!weakVertexIndexes[i]) {
+        weakVertices.add(currentVertex);
+      }
+    }
+    return weakVertices;
   }
 }

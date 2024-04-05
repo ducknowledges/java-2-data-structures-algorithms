@@ -370,4 +370,101 @@ class SimpleGraphTest {
 
     assertThat(route).isEmpty();
   }
+
+  @Test
+  @DisplayName("should return empty list when graph is empty")
+  void shouldReturnEmptyWhenGraphIsEmpty() {
+    SimpleGraph graph = new SimpleGraph(0);
+    ArrayList<Vertex> weakVertices = graph.WeakVertices();
+    assertThat(weakVertices).isEmpty();
+  }
+
+  @Test
+  @DisplayName("should return the vertex when graph has only one vertex")
+  void shouldReturnVertexWhenGraphHasOneVertex() {
+    SimpleGraph graph = new SimpleGraph(1);
+    graph.AddVertex(1);
+    ArrayList<Vertex> weakVertices = graph.WeakVertices();
+    assertThat(weakVertices).hasSize(1);
+    assertThat(weakVertices.get(0).Value).isEqualTo(1);
+  }
+
+  @Test
+  @DisplayName("should return all vertices when graph has two vertices but no edges")
+  void shouldReturnAllVerticesWhenGraphHasTwoVerticesNoEdges() {
+    SimpleGraph graph = new SimpleGraph(2);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    ArrayList<Vertex> weakVertices = graph.WeakVertices();
+    assertThat(weakVertices).hasSize(2);
+    assertThat(weakVertices.get(0).Value).isEqualTo(1);
+    assertThat(weakVertices.get(1).Value).isEqualTo(2);
+  }
+
+  @Test
+  @DisplayName("should return all vertices when graph has two vertices with an edge")
+  void shouldReturnAllVerticesWhenGraphHasTwoVerticesWithEdge() {
+    SimpleGraph graph = new SimpleGraph(2);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddEdge(0, 1);
+    ArrayList<Vertex> weakVertices = graph.WeakVertices();
+    assertThat(weakVertices).hasSize(2);
+    assertThat(weakVertices.get(0).Value).isEqualTo(1);
+    assertThat(weakVertices.get(1).Value).isEqualTo(2);
+  }
+
+  @Test
+  @DisplayName("should return weak vertices")
+  void shouldReturnWeakVertices() {
+    SimpleGraph graph = new SimpleGraph(5);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(2, 0);
+    graph.AddEdge(3, 4);
+
+    ArrayList<Vertex> weakVertices = graph.WeakVertices();
+
+    assertThat(weakVertices).hasSize(2);
+    assertThat(weakVertices.get(0).Value).isEqualTo(3);
+    assertThat(weakVertices.get(1).Value).isEqualTo(4);
+  }
+
+  @Test
+  @DisplayName("should find weak vertices")
+  void shouldFindWeakVertices() {
+    SimpleGraph graph = new SimpleGraph(9);
+    graph.AddVertex(0);
+    graph.AddVertex(1);
+    graph.AddVertex(2);
+    graph.AddVertex(3);
+    graph.AddVertex(4);
+    graph.AddVertex(5);
+    graph.AddVertex(6);
+    graph.AddVertex(7);
+    graph.AddVertex(8);
+    graph.AddEdge(0, 1);
+    graph.AddEdge(0, 2);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(1, 3);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(3, 4);
+    graph.AddEdge(4, 5);
+    graph.AddEdge(5, 2);
+    graph.AddEdge(5, 4);
+    graph.AddEdge(5, 6);
+    graph.AddEdge(5, 7);
+    graph.AddEdge(6, 7);
+    graph.AddEdge(7, 8);
+
+    List<Vertex> weakVertices = graph.WeakVertices();
+    List<Integer> weakVerticesValues = weakVertices.stream().map(v -> v.Value).toList();
+
+    assertThat(weakVerticesValues).containsExactly(4, 8);
+  }
 }
